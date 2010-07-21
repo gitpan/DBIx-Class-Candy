@@ -1,0 +1,40 @@
+{
+   "abstract" : "Sugar for your favorite ORM, DBIx::Class",
+   "author" : [
+      "Arthur Axel \"fREW\" Schmidt <frioux+cpan@gmail.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 4.101900, CPAN::Meta::Converter version 2.101670",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "DBIx-Class-Candy",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.31"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "DBIx::Class" : "0.08123",
+            "MRO::Compat" : "0.11",
+            "Sub::Exporter" : "0.982",
+            "Test::More" : "0.94",
+            "namespace::clean" : "0.18"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "repository" : {
+         "url" : "http://github.com/frioux/DBIx-Class-Candy"
+      }
+   },
+   "version" : "0.001000"
+}
+

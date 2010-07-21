@@ -1,0 +1,122 @@
+NAME
+    DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
+
+VERSION
+    version 0.001000
+
+SYNOPSIS
+     package MyApp::Schema::Result::Artist;
+
+     use DBIx::Class::Candy;
+
+     table 'artists';
+
+     column id => {
+       data_type => 'int',
+       is_auto_increment => 1,
+     };
+
+     column name => {
+       data_type => 'varchar',
+       size => 25,
+       is_nullable => 1,
+     };
+
+     primary_key 'id';
+
+     has_many albums => 'A::Schema::Result::Album', 'artist_id';
+
+     1;
+
+DESCRIPTION
+    "DBIx::Class::Candy" is a simple sugar layer for definition of
+    DBIx::Class results. Note that it may later be expanded to add sugar for
+    more "DBIx::Class" related things. By default "DBIx::Class::Candy":
+
+    *   turns on strict and warnings
+
+    *   sets your parent class
+
+    *   exports a bunch of the package methods that you normally use to
+        define your DBIx::Class results
+
+    *   makes a few aliases to make some of the original method names a
+        shorter or more clear
+
+    It assumes a DBIx::Class::Core-like API, but you can tailor it to suit
+    your needs.
+
+HERE BE DRAGONS
+    Part of the goal of this module is to fix some warts of the original API
+    for defining DBIx::Class results. Given that we would like to get a few
+    eyeballs on it before we finalize it. If you are writing code that you
+    will not touch again for years, do not use this till this warning is
+    removed.
+
+IMPORT OPTIONS
+  -base
+     use DBIx::Class::Candy -base => 'MyApp::Schema::Result';
+
+    The first thing you can do to customize your usage of
+    "DBIx::Class::Candy" is change the parent class. Do that by using the
+    "-base" import option.
+
+  -components
+     use DBIx::Class::Candy -components => ['FilterColumn'];
+
+    "DBIx::Class::Candy" allows you to set which components you are using at
+    import time so that the components can define their own sugar to export
+    as well. See DBIx::Class::Candy::Exports for details on how that works.
+
+  -perl5
+     use DBIx::Class::Candy -perl5 => v10;
+
+    I love the new features in Perl 5.10 and 5.12, so I felt that it would
+    be nice to remove the boiler plate of doing "use feature ':5.10'" and
+    add it to my sugar importer. Feel free not to use this.
+
+IMPORTED SUBROUTINES
+    Most of the imported subroutines are the same as what you get when you
+    use the normal interface for result definition: they have the same names
+    and take the same arguments. In general write the code the way you
+    normally would, leaving out the "__PACKAGE__->" part. The following are
+    methods that are exported with the same name and arguments:
+
+     belongs_to
+     has_many
+     has_one
+     inflate_colum
+     many_to_many
+     might_have
+     remove_column
+     remove_columns
+     resultset_attributes
+     resultset_class
+     sequence
+     source_name
+     table
+
+    There are some exceptions though, which brings us to:
+
+IMPORTED ALIASES
+    These are merely renamed versions of the functions you know and love.
+    The idea is to make your result classes a tiny bit prettier by aliasing
+    some methods. If you know your "DBIx::Class" API you noticed that in the
+    "SYNOPSIS" I used "column" instead of "add_columns" and "primary_key"
+    instead of "set_primary_key". The old versions work, this is just nicer.
+    A list of aliases are as follows:
+
+     column            => 'add_columns',
+     primary_key       => 'set_primary_key',
+     unique_constraint => 'add_unique_constraint',
+     relationship      => 'add_relationship',
+
+AUTHOR
+    Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2010 by Arthur Axel "fREW" Schmidt.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
