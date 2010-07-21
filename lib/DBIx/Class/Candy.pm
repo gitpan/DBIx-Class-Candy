@@ -1,6 +1,6 @@
 package DBIx::Class::Candy;
 BEGIN {
-  $DBIx::Class::Candy::VERSION = '0.001000';
+  $DBIx::Class::Candy::VERSION = '0.001001';
 }
 
 use strict;
@@ -167,7 +167,7 @@ DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.001000
+version 0.001001
 
 =head1 SYNOPSIS
 
