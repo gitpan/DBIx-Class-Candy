@@ -1,6 +1,6 @@
 package DBIx::Class::Candy;
 BEGIN {
-  $DBIx::Class::Candy::VERSION = '0.001001';
+  $DBIx::Class::Candy::VERSION = '0.001002';
 }
 
 use strict;
@@ -15,7 +15,8 @@ my $inheritor;
 
 sub _generate {
    my ($class, $name) = @_;
-   sub { $inheritor->$name(@_) }
+   my $i = $inheritor;
+   sub { $i->$name(@_) }
 }
 
 my @custom_methods;
@@ -31,7 +32,8 @@ my %aliases = (
 sub _generate_alias {
    my ($class, $name) = @_;
    my $meth = $aliases{$name};
-   sub { $inheritor->$meth(@_) }
+   my $i = $inheritor;
+   sub { $i->$meth(@_) }
 }
 
 my @methods = qw(
@@ -167,7 +169,7 @@ DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.001001
+version 0.001002
 
 =head1 SYNOPSIS
 
