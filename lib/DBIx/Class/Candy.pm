@@ -1,6 +1,6 @@
 package DBIx::Class::Candy;
 BEGIN {
-  $DBIx::Class::Candy::VERSION = '0.001002';
+  $DBIx::Class::Candy::VERSION = '0.001003';
 }
 
 use strict;
@@ -8,19 +8,9 @@ use warnings;
 use namespace::clean;
 require DBIx::Class::Candy::Exports;
 use MRO::Compat;
+use Sub::Exporter 'build_exporter';
 
 # ABSTRACT: Sugar for your favorite ORM, DBIx::Class
-
-my $inheritor;
-
-sub _generate {
-   my ($class, $name) = @_;
-   my $i = $inheritor;
-   sub { $i->$name(@_) }
-}
-
-my @custom_methods;
-my %custom_aliases;
 
 my %aliases = (
    column            => 'add_columns',
@@ -28,13 +18,6 @@ my %aliases = (
    unique_constraint => 'add_unique_constraint',
    relationship      => 'add_relationship',
 );
-
-sub _generate_alias {
-   my ($class, $name) = @_;
-   my $meth = $aliases{$name};
-   my $i = $inheritor;
-   sub { $i->$meth(@_) }
-}
 
 my @methods = qw(
    resultset_class
@@ -55,80 +38,18 @@ my @methods = qw(
    sequence
 );
 
-use Sub::Exporter 'build_exporter';
-my $base;
-my $perl_version;
-my $components;
-
-my $import = build_exporter({
-   exports => [
-      (map { $_ => \'_generate' } @methods, @custom_methods),
-      (map { $_ => \'_generate_alias' } keys %aliases, keys %custom_aliases),
-   ],
-   groups  => {
-      default => [
-         @methods, @custom_methods, keys %aliases, keys %custom_aliases
-      ],
-   },
-   installer  => sub {
-      Sub::Exporter::default_installer @_;
-      namespace::clean->import(
-         -cleanee => $inheritor,
-      )
-   },
-   collectors => [
-      INIT => sub {
-         my $orig = $_[1]->{import_args};
-         $_[1]->{import_args} = [];
-         %custom_aliases = ();
-         @custom_methods = ();
-         $inheritor = $_[1]->{into};
-
-         # inlined from parent.pm
-         for ( my @useless = $base ) {
-            s{::|'}{/}g;
-            require "$_.pm"; # dies if the file is not found
-         }
-
-         {
-            no strict 'refs';
-            # This is more efficient than push for the new MRO
-            # at least until the new MRO is fixed
-            @{"$inheritor\::ISA"} = (@{"$inheritor\::ISA"} , $base);
-         }
-
-         $inheritor->load_components(@{$components});
-         for (@{mro::get_linear_isa($inheritor)}) {
-            if (my $hashref = $DBIx::Class::Candy::Exports::aliases{$_}) {
-               %custom_aliases = (%custom_aliases, %{$hashref})
-            }
-            if (my $arrayref = $DBIx::Class::Candy::Exports::methods{$_}) {
-               @custom_methods = (@custom_methods, @{$arrayref})
-            }
-         }
-
-         if ($perl_version) {
-            require feature;
-            feature->import(":5.$perl_version")
-         }
-
-         strict->import;
-         warnings->import;
-
-         1;
-      }
-   ],
-});
-
 sub import {
    my $self = shift;
 
-   $base = 'DBIx::Class::Core';
-   $perl_version = undef;
-   $components = [];
+   my $base = 'DBIx::Class::Core';
+   my $perl_version = undef;
+   my $components = [];
 
+   my @custom_methods;
+   my %custom_aliases;
    my @rest;
 
+   my $inheritor = caller(0);
    my $skipnext;
    for my $idx ( 0 .. $#_ ) {
       my $val = $_[$idx];
@@ -153,7 +74,72 @@ sub import {
       }
    }
 
+   # inlined from parent.pm
+   for ( my @useless = $base ) {
+      s{::|'}{/}g;
+      require "$_.pm"; # dies if the file is not found
+   }
+
+   {
+      no strict 'refs';
+      # This is more efficient than push for the new MRO
+      # at least until the new MRO is fixed
+      @{"$inheritor\::ISA"} = (@{"$inheritor\::ISA"} , $base);
+   }
+   $inheritor->load_components(@{$components});
+   for (@{mro::get_linear_isa($inheritor)}) {
+      if (my $hashref = $DBIx::Class::Candy::Exports::aliases{$_}) {
+         %custom_aliases = (%custom_aliases, %{$hashref})
+      }
+      if (my $arrayref = $DBIx::Class::Candy::Exports::methods{$_}) {
+         @custom_methods = (@custom_methods, @{$arrayref})
+      }
+   }
+
    @_ = ($self, @rest);
+   my $import = build_exporter({
+      exports => [
+         (map { $_ => sub {
+            my ($class, $name) = @_;
+            sub { $inheritor->$name(@_) }
+         } } @methods, @custom_methods),
+         (map { $_ => sub {
+            my ($class, $name) = @_;
+            my $meth = $aliases{$name} || $custom_aliases{$name};
+            sub { $inheritor->$meth(@_) }
+         } } keys %aliases, keys %custom_aliases),
+      ],
+      groups  => {
+         default => [
+            @methods, @custom_methods, keys %aliases, keys %custom_aliases
+         ],
+      },
+      installer  => sub {
+         Sub::Exporter::default_installer @_;
+         namespace::clean->import(
+            -cleanee => $inheritor,
+         )
+      },
+      collectors => [
+         INIT => sub {
+            my $orig = $_[1]->{import_args};
+            $_[1]->{import_args} = [];
+            %custom_aliases = ();
+            @custom_methods = ();
+
+            if ($perl_version) {
+               require feature;
+               feature->import(":5.$perl_version")
+            }
+
+            strict->import;
+            warnings->import;
+
+            1;
+         }
+      ],
+   });
+
    goto $import
 }
 
@@ -169,7 +155,7 @@ DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.001002
+version 0.001003
 
 =head1 SYNOPSIS
 

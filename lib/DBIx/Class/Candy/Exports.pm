@@ -1,6 +1,6 @@
 package DBIx::Class::Candy::Exports;
 BEGIN {
-  $DBIx::Class::Candy::Exports::VERSION = '0.001002';
+  $DBIx::Class::Candy::Exports::VERSION = '0.001003';
 }
 
 # ABSTRACT: Create sugar for your favorite ORM, DBIx::Class
@@ -11,8 +11,8 @@ use warnings;
 our %methods;
 our %aliases;
 
-sub export_methods        { $methods{scalar caller(1)} = $_[1] }
-sub export_method_aliases { $aliases{scalar caller(1)} = $_[1] }
+sub export_methods        { $methods{scalar caller(0)} = $_[0] }
+sub export_method_aliases { $aliases{scalar caller(0)} = $_[0] }
 
 use Sub::Exporter -setup => {
    exports => [ qw(export_methods export_method_aliases) ],
@@ -31,7 +31,7 @@ DBIx::Class::Candy::Exports - Create sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.001002
+version 0.001003
 
 =head1 SYNOPSIS
 
