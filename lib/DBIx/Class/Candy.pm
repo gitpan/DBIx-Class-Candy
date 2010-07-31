@@ -1,6 +1,6 @@
 package DBIx::Class::Candy;
 BEGIN {
-  $DBIx::Class::Candy::VERSION = '0.001003';
+  $DBIx::Class::Candy::VERSION = '0.001004';
 }
 
 use strict;
@@ -101,12 +101,14 @@ sub import {
       exports => [
          (map { $_ => sub {
             my ($class, $name) = @_;
-            sub { $inheritor->$name(@_) }
+            my $i = $inheritor;
+            sub { $i->$name(@_) }
          } } @methods, @custom_methods),
          (map { $_ => sub {
             my ($class, $name) = @_;
             my $meth = $aliases{$name} || $custom_aliases{$name};
-            sub { $inheritor->$meth(@_) }
+            my $i = $inheritor;
+            sub { $i->$meth(@_) }
          } } keys %aliases, keys %custom_aliases),
       ],
       groups  => {
@@ -155,7 +157,7 @@ DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.001003
+version 0.001004
 
 =head1 SYNOPSIS
 
