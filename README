@@ -2,7 +2,7 @@ NAME
     DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 VERSION
-    version 0.001004
+    version 0.001005
 
 SYNOPSIS
      package MyApp::Schema::Result::Artist;
@@ -42,6 +42,9 @@ DESCRIPTION
 
     *   makes a few aliases to make some of the original method names a
         shorter or more clear
+
+    *   defines very few new subroutines that transform the arguments passed
+        to them
 
     It assumes a DBIx::Class::Core-like API, but you can tailor it to suit
     your needs.
@@ -110,6 +113,19 @@ IMPORTED ALIASES
      primary_key       => 'set_primary_key',
      unique_constraint => 'add_unique_constraint',
      relationship      => 'add_relationship',
+
+SECONDARY API
+    Lastly, there is currently a single "transformer" for "add_columns", so
+    that people used to the Moose api will feel more at home. Note that this
+    may go into a "Candy Component" at some point.
+
+    Example usage:
+
+     has_column foo => (
+       data_type => 'varchar',
+       size => 25,
+       is_nullable => 1,
+     );
 
 AUTHOR
     Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
