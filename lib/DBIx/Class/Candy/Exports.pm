@@ -1,6 +1,6 @@
 package DBIx::Class::Candy::Exports;
 BEGIN {
-  $DBIx::Class::Candy::Exports::VERSION = '0.001005';
+  $DBIx::Class::Candy::Exports::VERSION = '0.001006';
 }
 
 # ABSTRACT: Create sugar for your favorite ORM, DBIx::Class
@@ -31,7 +31,7 @@ DBIx::Class::Candy::Exports - Create sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.001005
+version 0.001006
 
 =head1 SYNOPSIS
 
@@ -86,7 +86,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

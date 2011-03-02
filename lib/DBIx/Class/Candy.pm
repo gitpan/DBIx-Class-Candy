@@ -1,6 +1,6 @@
 package DBIx::Class::Candy;
 BEGIN {
-  $DBIx::Class::Candy::VERSION = '0.001005';
+  $DBIx::Class::Candy::VERSION = '0.001006';
 }
 
 use strict;
@@ -27,7 +27,7 @@ my @methods = qw(
    table
    source_name
 
-   inflate_colum
+   inflate_column
 
    belongs_to
    has_many
@@ -106,6 +106,15 @@ sub import {
                $i->add_columns($column => { @_ })
             }
          },
+         primary_column => sub {
+            my $i = $inheritor;
+            sub {
+               my $column = shift;
+               my $info   = shift;
+               $i->add_columns($column => $info);
+               $i->set_primary_key($column);
+            }
+         },
          (map { $_ => sub {
             my ($class, $name) = @_;
             my $i = $inheritor;
@@ -120,7 +129,7 @@ sub import {
       ],
       groups  => {
          default => [
-            'has_column', @methods, @custom_methods, keys %aliases, keys %custom_aliases
+            'has_column', 'primary_column', @methods, @custom_methods, keys %aliases, keys %custom_aliases
          ],
       },
       installer  => sub {
@@ -164,7 +173,7 @@ DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.001005
+version 0.001006
 
 =head1 SYNOPSIS
 
@@ -269,7 +278,7 @@ are exported with the same name and arguments:
  belongs_to
  has_many
  has_one
- inflate_colum
+ inflate_column
  many_to_many
  might_have
  remove_column
@@ -315,7 +324,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
