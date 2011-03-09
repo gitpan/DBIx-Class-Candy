@@ -2,16 +2,14 @@ NAME
     DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 VERSION
-    version 0.001006
+    version 0.002000
 
 SYNOPSIS
      package MyApp::Schema::Result::Artist;
 
-     use DBIx::Class::Candy;
+     use DBIx::Class::Candy -autotable => v1;
 
-     table 'artists';
-
-     column id => {
+     primary_column id => {
        data_type => 'int',
        is_auto_increment => 1,
      };
@@ -21,8 +19,6 @@ SYNOPSIS
        size => 25,
        is_nullable => 1,
      };
-
-     primary_key 'id';
 
      has_many albums => 'A::Schema::Result::Album', 'artist_id';
 
@@ -57,12 +53,22 @@ HERE BE DRAGONS
     removed.
 
 IMPORT OPTIONS
+    See "SETTING DEFAULT IMPORT OPTIONS" for information on setting these
+    schema wide.
+
   -base
      use DBIx::Class::Candy -base => 'MyApp::Schema::Result';
 
     The first thing you can do to customize your usage of
     "DBIx::Class::Candy" is change the parent class. Do that by using the
     "-base" import option.
+
+  -autotable
+     use DBIx::Class::Candy -autotable => v1;
+
+    Don't waste your precious keystrokes typing "table 'buildings'", let
+    "DBIx::Class::Candy" do that for you! See "AUTOTABLE VERSIONS" for what
+    the existing versions will generate for you.
 
   -components
      use DBIx::Class::Candy -components => ['FilterColumn'];
@@ -114,10 +120,41 @@ IMPORTED ALIASES
      unique_constraint => 'add_unique_constraint',
      relationship      => 'add_relationship',
 
+SETTING DEFAULT IMPORT OPTIONS
+    Eventually you will get tired of writing the following in every single
+    one of your results:
+
+     use DBIx::Class::Candy
+       -base      => 'MyApp::Schema::Result',
+       -perl5     => v12,
+       -autotable => v1;
+
+    You can set all of these for your whole schema if you define your own
+    "Candy" subclass as follows:
+
+     package MyApp::Schema::Candy;
+
+     use base 'DBIx::Class::Candy';
+
+     sub base { $_[1] || 'MyApp::Schema::Result' }
+     sub perl_version { 12 }
+     sub autotable { 1 }
+
+    Note the "$_[1] ||" in "base". All of these methods are passed the
+    values passed in from the arguments to the subclass, so you can either
+    throw them away, honor them, die on usage, or whatever. To be clear, if
+    you define your subclass, and someone uses it as follows:
+
+     use MyApp::Schema::Candy -base => 'Moose', -perl5 => v30, -autotable => v3;
+
+    Your "base" method will get "Moose", your "perl_version" will get 30,
+    and your "autotable" will get 3.
+
 SECONDARY API
-    Lastly, there is currently a single "transformer" for "add_columns", so
-    that people used to the Moose api will feel more at home. Note that this
-    may go into a "Candy Component" at some point.
+  has_column
+    There is currently a single "transformer" for "add_columns", so that
+    people used to the Moose api will feel more at home. Note that this may
+    go into a "Candy Component" at some point.
 
     Example usage:
 
@@ -126,6 +163,62 @@ SECONDARY API
        size => 25,
        is_nullable => 1,
      );
+
+  primary_column
+    Another handy little feature that allows you to define a column and set
+    it as the primary key in a single call:
+
+     primary_column id => {
+       data_type => 'int',
+       is_auto_increment => 1,
+     };
+
+  unique_column
+    This allows you to define a column and set it as unique in a single
+    call:
+
+     unique_column name => {
+       data_type => 'varchar',
+       size => 30,
+     };
+
+AUTOTABLE VERSIONS
+    Currently there is a single version, "v1", which looks at your class
+    name, grabs everything after "::Schema::Result::", removes the "::"'s,
+    converts it to underscores instead of camel-case, and pluralizes it.
+    Here are some examples if that's not clear:
+
+     MyApp::Schema::Result::Cat -> cats
+     MyApp::Schema::Result::Software::Buidling -> software_buildings
+     MyApp::Schema::Result::LonelyPerson -> lonely_people
+
+    Also, if you just want to be different, you can easily set up your own
+    naming scheme. Just add a "gen_table" method to your candy subclass. The
+    method gets passed the class name and the autotable version, which of
+    course you may ignore. For example, one might just do the following:
+
+     sub gen_table {
+       my ($self, $class) = @_;
+
+       $class =~ s/::/_/g;
+       lc $class;
+     }
+
+    Which would tranform "MyApp::Schema::Result::Foo" into
+    "myapp_schema_result_foo".
+
+    Or maybe instead of using the standard "MyApp::Schema::Result" namespace
+    you decided to be different and do "MyApp::DB::Table" or something silly
+    like that. You could pre-process your class name so that the default
+    "gen_table" will still work:
+
+     sub gen_table {
+       my $self = shift;
+       my $class = $_[0];
+
+       $class =~ s/::DB::Table::/::Schema::Result::/;
+       return $self->next::method(@_);
+     }
 
 AUTHOR
     Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>

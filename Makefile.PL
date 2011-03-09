@@ -21,12 +21,15 @@ my %WriteMakefileArgs = (
   'NAME' => 'DBIx::Class::Candy',
   'PREREQ_PM' => {
     'DBIx::Class' => '0.08123',
+    'Lingua::EN::Inflect' => '0',
     'MRO::Compat' => '0.11',
+    'String::CamelCase' => '0',
     'Sub::Exporter' => '0.982',
+    'Test::Deep' => '0',
     'Test::More' => '0.94',
     'namespace::clean' => '0.18'
   },
-  'VERSION' => '0.001006',
+  'VERSION' => '0.002000',
   'test' => {
     'TESTS' => 't/*.t'
   }

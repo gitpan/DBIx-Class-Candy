@@ -1,5 +1,11 @@
 Revision history for DBIx-Class-Candy
 
+0.002000  2011-03-09 12:03:50 CST6CDT
+  - Add unique_column sugar
+  - Allow Candy to automatically set table name
+  - Allow Candy subclass to define default base and default perl version
+  - Add missing docs for primary_column sugar
+
 0.001006  2011-03-01 22:44:45 CST6CDT
   - Add primary_column sugar
   - Fix incorrectly named export (inflate_colum .= n)

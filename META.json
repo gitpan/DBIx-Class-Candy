@@ -22,8 +22,11 @@
       "runtime" : {
          "requires" : {
             "DBIx::Class" : "0.08123",
+            "Lingua::EN::Inflect" : 0,
             "MRO::Compat" : "0.11",
+            "String::CamelCase" : 0,
             "Sub::Exporter" : "0.982",
+            "Test::Deep" : 0,
             "Test::More" : "0.94",
             "namespace::clean" : "0.18"
          }
@@ -37,6 +40,6 @@
          "web" : "http://github.com/frioux/DBIx-Class-Candy"
       }
    },
-   "version" : "0.001006"
+   "version" : "0.002000"
 }
 
