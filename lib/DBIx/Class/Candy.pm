@@ -1,6 +1,6 @@
 package DBIx::Class::Candy;
 BEGIN {
-  $DBIx::Class::Candy::VERSION = '0.002000';
+  $DBIx::Class::Candy::VERSION = '0.002001';
 }
 
 use strict;
@@ -11,6 +11,7 @@ use MRO::Compat;
 use Sub::Exporter 'build_exporter';
 use Lingua::EN::Inflect ();
 use String::CamelCase ();
+use Carp 'croak';
 
 # ABSTRACT: Sugar for your favorite ORM, DBIx::Class
 
@@ -49,12 +50,14 @@ sub autotable { $_[1] }
 sub gen_table {
    my ( $self, $class, $version ) = @_;
    if ($version == 1) {
-      $class =~ /::Schema::Result::(.+)$/;
-      my $part = $1;
-      $part =~ s/:://g;
-      $part = String::CamelCase::decamelize($part);
-      return join q{_}, split /\s+/,
-         Lingua::EN::Inflect::PL(join q{ }, split /_/, $part);
+      if (my ( $part ) = $class =~ /(?:::Schema)?::Result::(.+)$/) {
+         $part =~ s/:://g;
+         $part = String::CamelCase::decamelize($part);
+         return join q{_}, split /\s+/,
+            Lingua::EN::Inflect::PL(join q{ }, split /_/, $part);
+      } else {
+         croak 'unrecognized naming scheme!'
+      }
    }
 }
 
@@ -281,7 +284,7 @@ DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.002000
+version 0.002001
 
 =head1 SYNOPSIS
 
@@ -488,13 +491,15 @@ This allows you to define a column and set it as unique in a single call:
 =head1 AUTOTABLE VERSIONS
 
 Currently there is a single version, C<v1>, which looks at your class name,
-grabs everything after C<::Schema::Result::>, removes the C<::>'s, converts it
-to underscores instead of camel-case, and pluralizes it.  Here are some
-examples if that's not clear:
+grabs everything after C<::Schema::Result::> (or C<::Result::>), removes the
+C<::>'s, converts it to underscores instead of camel-case, and pluralizes it.
+Here are some examples if that's not clear:
 
  MyApp::Schema::Result::Cat -> cats
  MyApp::Schema::Result::Software::Buidling -> software_buildings
  MyApp::Schema::Result::LonelyPerson -> lonely_people
+ MyApp::DB::Result::FriendlyPerson -> friendly_people
+ MyApp::DB::Result::Dog -> dogs
 
 Also, if you just want to be different, you can easily set up your own naming
 scheme.  Just add a C<gen_table> method to your candy subclass.  The method

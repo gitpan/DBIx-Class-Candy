@@ -7,6 +7,7 @@ README
 dist.ini
 lib/DBIx/Class/Candy.pm
 lib/DBIx/Class/Candy/Exports.pm
+t/autotable.t
 t/imports.t
 t/irc-schema.t
 t/lib/A/Component.pm
