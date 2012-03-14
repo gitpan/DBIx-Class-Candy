@@ -2,7 +2,7 @@ NAME
     DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 VERSION
-    version 0.002001
+    version 0.002100
 
 SYNOPSIS
      package MyApp::Schema::Result::Artist;
@@ -173,6 +173,12 @@ SECONDARY API
        is_auto_increment => 1,
      };
 
+    If your table has multiple columns in it's primary key, merely call this
+    method for each column:
+
+     primary_column person_id => { data_type => 'int' };
+     primary_column friend_id => { data_type => 'int' };
+
   unique_column
     This allows you to define a column and set it as unique in a single
     call:
@@ -226,7 +232,7 @@ AUTHOR
     Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
+    This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.

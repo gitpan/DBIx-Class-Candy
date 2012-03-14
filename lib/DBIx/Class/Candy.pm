@@ -1,6 +1,6 @@
 package DBIx::Class::Candy;
-BEGIN {
-  $DBIx::Class::Candy::VERSION = '0.002001';
+{
+  $DBIx::Class::Candy::VERSION = '0.002100';
 }
 
 use strict;
@@ -177,7 +177,7 @@ sub gen_primary_column {
       my $info   = shift;
       $set_table->();
       $i->add_columns($column => $info);
-      $i->set_primary_key($column);
+      $i->set_primary_key($i->primary_columns, $column);
     }
   }
 }
@@ -284,7 +284,7 @@ DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
 =head1 VERSION
 
-version 0.002001
+version 0.002100
 
 =head1 SYNOPSIS
 
@@ -479,6 +479,12 @@ the primary key in a single call:
    is_auto_increment => 1,
  };
 
+If your table has multiple columns in it's primary key, merely call this method
+for each column:
+
+ primary_column person_id => { data_type => 'int' };
+ primary_column friend_id => { data_type => 'int' };
+
 =head2 unique_column
 
 This allows you to define a column and set it as unique in a single call:
@@ -535,7 +541,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

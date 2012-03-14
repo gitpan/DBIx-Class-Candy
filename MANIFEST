@@ -17,6 +17,7 @@ t/lib/A/Schema/Result.pm
 t/lib/A/Schema/Result/Album.pm
 t/lib/A/Schema/Result/Artist.pm
 t/lib/A/Schema/Result/Song.pm
+t/lib/A/Schema/Result/Statistic.pm
 t/lib/IRC/Schema.pm
 t/lib/IRC/Schema/Candy.pm
 t/lib/IRC/Schema/Result.pm
