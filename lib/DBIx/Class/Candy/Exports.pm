@@ -1,12 +1,11 @@
 package DBIx::Class::Candy::Exports;
-{
-  $DBIx::Class::Candy::Exports::VERSION = '0.002100';
-}
 
 # ABSTRACT: Create sugar for your favorite ORM, DBIx::Class
 
 use strict;
 use warnings;
+
+our $VERSION = '0.002101'; # VERSION
 
 our %methods;
 our %aliases;
@@ -28,10 +27,6 @@ __END__
 =head1 NAME
 
 DBIx::Class::Candy::Exports - Create sugar for your favorite ORM, DBIx::Class
-
-=head1 VERSION
-
-version 0.002100
 
 =head1 SYNOPSIS
 

@@ -1,10 +1,10 @@
 package DBIx::Class::Candy;
-{
-  $DBIx::Class::Candy::VERSION = '0.002100';
-}
 
 use strict;
 use warnings;
+
+our $VERSION = '0.002101'; # VERSION
+
 use namespace::clean;
 require DBIx::Class::Candy::Exports;
 use MRO::Compat;
@@ -281,10 +281,6 @@ __END__
 =head1 NAME
 
 DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
-
-=head1 VERSION
-
-version 0.002100
 
 =head1 SYNOPSIS
 

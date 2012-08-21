@@ -1,9 +1,6 @@
 NAME
     DBIx::Class::Candy - Sugar for your favorite ORM, DBIx::Class
 
-VERSION
-    version 0.002100
-
 SYNOPSIS
      package MyApp::Schema::Result::Artist;
 

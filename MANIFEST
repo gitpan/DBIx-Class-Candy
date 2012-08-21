@@ -29,3 +29,4 @@ t/lib/IRC/Schema/Result/User.pm
 t/lib/IRC/Schema/ResultSet.pm
 t/release-pod-coverage.t
 t/release-pod-syntax.t
+weaver.ini

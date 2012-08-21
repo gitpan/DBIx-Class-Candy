@@ -1,5 +1,9 @@
 Revision history for DBIx-Class-Candy
 
+0.002101  2012-08-21 17:47:50 America/Chicago
+  - remove VERSION from pod because yuck
+  - fix repo url
+
 0.002100  2012-03-13 20:31:45 America/Chicago
   - primary_column may be called multiple times to define a multicolumn pk
 
