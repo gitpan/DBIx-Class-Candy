@@ -3,7 +3,7 @@ package DBIx::Class::Candy;
 use strict;
 use warnings;
 
-our $VERSION = '0.002101'; # VERSION
+our $VERSION = '0.002102'; # VERSION
 
 use namespace::clean;
 require DBIx::Class::Candy::Exports;
@@ -274,8 +274,8 @@ sub gen_INIT {
 
 1;
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -543,4 +543,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
