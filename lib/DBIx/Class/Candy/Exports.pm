@@ -5,7 +5,7 @@ package DBIx::Class::Candy::Exports;
 use strict;
 use warnings;
 
-our $VERSION = '0.002102'; # VERSION
+our $VERSION = '0.002103'; # VERSION
 
 our %methods;
 our %aliases;

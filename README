@@ -42,13 +42,6 @@ DESCRIPTION
     It assumes a DBIx::Class::Core-like API, but you can tailor it to suit
     your needs.
 
-HERE BE DRAGONS
-    Part of the goal of this module is to fix some warts of the original API
-    for defining DBIx::Class results. Given that we would like to get a few
-    eyeballs on it before we finalize it. If you are writing code that you
-    will not touch again for years, do not use this till this warning is
-    removed.
-
 IMPORT OPTIONS
     See "SETTING DEFAULT IMPORT OPTIONS" for information on setting these
     schema wide.

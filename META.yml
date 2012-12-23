@@ -24,4 +24,4 @@ requires:
   namespace::clean: 0.18
 resources:
   repository: git://github.com/frioux/DBIx-Class-Candy.git
-version: 0.002102
+version: 0.002103

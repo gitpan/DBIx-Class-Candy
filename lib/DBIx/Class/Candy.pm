@@ -3,14 +3,12 @@ package DBIx::Class::Candy;
 use strict;
 use warnings;
 
-our $VERSION = '0.002102'; # VERSION
+our $VERSION = '0.002103'; # VERSION
 
 use namespace::clean;
 require DBIx::Class::Candy::Exports;
 use MRO::Compat;
 use Sub::Exporter 'build_exporter';
-use Lingua::EN::Inflect ();
-use String::CamelCase ();
 use Carp 'croak';
 
 # ABSTRACT: Sugar for your favorite ORM, DBIx::Class
@@ -51,6 +49,8 @@ sub gen_table {
    my ( $self, $class, $version ) = @_;
    if ($version == 1) {
       if (my ( $part ) = $class =~ /(?:::Schema)?::Result::(.+)$/) {
+         require Lingua::EN::Inflect;
+         require String::CamelCase;
          $part =~ s/:://g;
          $part = String::CamelCase::decamelize($part);
          return join q{_}, split /\s+/,
@@ -337,13 +337,6 @@ defines very few new subroutines that transform the arguments passed to them
 
 It assumes a L<DBIx::Class::Core>-like API, but you can tailor it to suit
 your needs.
-
-=head1 HERE BE DRAGONS
-
-Part of the goal of this module is to fix some warts of the original API
-for defining L<DBIx::Class> results.  Given that we would like to get a few
-eyeballs on it before we finalize it.  If you are writing code that you will
-not touch again for years, do not use this till this warning is removed.
 
 =head1 IMPORT OPTIONS
 
