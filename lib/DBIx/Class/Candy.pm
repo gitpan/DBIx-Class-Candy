@@ -3,7 +3,7 @@ package DBIx::Class::Candy;
 use strict;
 use warnings;
 
-our $VERSION = '0.002103'; # VERSION
+our $VERSION = '0.002104'; # VERSION
 
 use namespace::clean;
 require DBIx::Class::Candy::Exports;
@@ -436,11 +436,11 @@ values passed in from the arguments to the subclass, so you can either throw
 them away, honor them, die on usage, or whatever.  To be clear, if you define
 your subclass, and someone uses it as follows:
 
- use MyApp::Schema::Candy -base => 'Moose', -perl5 => v30, -autotable => v3;
+ use MyApp::Schema::Candy -base => 'MyApp::Schema::Result', -perl5 => v18, -autotable => v1;
 
-Your C<base> method will get C<Moose>, your
-C<perl_version> will get C<30>, and your C<autotable> will get
-C<3>.
+Your C<base> method will get C<MyApp::Schema::Result>, your
+C<perl_version> will get C<18>, and your C<autotable> will get
+C<1>.
 
 =head1 SECONDARY API
 
@@ -468,7 +468,7 @@ the primary key in a single call:
    is_auto_increment => 1,
  };
 
-If your table has multiple columns in it's primary key, merely call this method
+If your table has multiple columns in its primary key, merely call this method
 for each column:
 
  primary_column person_id => { data_type => 'int' };
@@ -491,7 +491,7 @@ C<::>'s, converts it to underscores instead of camel-case, and pluralizes it.
 Here are some examples if that's not clear:
 
  MyApp::Schema::Result::Cat -> cats
- MyApp::Schema::Result::Software::Buidling -> software_buildings
+ MyApp::Schema::Result::Software::Building -> software_buildings
  MyApp::Schema::Result::LonelyPerson -> lonely_people
  MyApp::DB::Result::FriendlyPerson -> friendly_people
  MyApp::DB::Result::Dog -> dogs
@@ -530,7 +530,7 @@ Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
+This software is copyright (c) 2013 by Arthur Axel "fREW" Schmidt.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

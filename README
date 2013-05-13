@@ -135,10 +135,10 @@ SETTING DEFAULT IMPORT OPTIONS
     throw them away, honor them, die on usage, or whatever. To be clear, if
     you define your subclass, and someone uses it as follows:
 
-     use MyApp::Schema::Candy -base => 'Moose', -perl5 => v30, -autotable => v3;
+     use MyApp::Schema::Candy -base => 'MyApp::Schema::Result', -perl5 => v18, -autotable => v1;
 
-    Your "base" method will get "Moose", your "perl_version" will get 30,
-    and your "autotable" will get 3.
+    Your "base" method will get "MyApp::Schema::Result", your "perl_version"
+    will get 18, and your "autotable" will get 1.
 
 SECONDARY API
   has_column
@@ -163,7 +163,7 @@ SECONDARY API
        is_auto_increment => 1,
      };
 
-    If your table has multiple columns in it's primary key, merely call this
+    If your table has multiple columns in its primary key, merely call this
     method for each column:
 
      primary_column person_id => { data_type => 'int' };
@@ -185,7 +185,7 @@ AUTOTABLE VERSIONS
     and pluralizes it. Here are some examples if that's not clear:
 
      MyApp::Schema::Result::Cat -> cats
-     MyApp::Schema::Result::Software::Buidling -> software_buildings
+     MyApp::Schema::Result::Software::Building -> software_buildings
      MyApp::Schema::Result::LonelyPerson -> lonely_people
      MyApp::DB::Result::FriendlyPerson -> friendly_people
      MyApp::DB::Result::Dog -> dogs
@@ -222,7 +222,7 @@ AUTHOR
     Arthur Axel "fREW" Schmidt <frioux+cpan@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2012 by Arthur Axel "fREW" Schmidt.
+    This software is copyright (c) 2013 by Arthur Axel "fREW" Schmidt.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.
