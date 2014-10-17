@@ -3,7 +3,7 @@ package DBIx::Class::Candy;
 use strict;
 use warnings;
 
-our $VERSION = '0.002105'; # VERSION
+our $VERSION = '0.002106'; # VERSION
 
 use namespace::clean;
 require DBIx::Class::Candy::Exports;
@@ -82,7 +82,8 @@ sub import {
    my $set_table = sub {};
    if (my $v = $self->autotable($args->{autotable})) {
      my $table_name = $self->gen_table($inheritor, $v);
-     $set_table = sub { $inheritor->table($table_name); $set_table = sub {} }
+     my $ran = 0;
+     $set_table = sub { $inheritor->table($table_name) unless $ran++ }
    }
    @_ = ($self, @rest);
    my $import = build_exporter({
@@ -99,7 +100,7 @@ sub import {
             qw(has_column primary_column unique_column), @methods, @custom_methods, keys %aliases, keys %custom_aliases
          ],
       },
-      installer  => $self->installer($inheritor),
+      installer  => $self->installer,
       collectors => [
          INIT => $self->gen_INIT($perl_version, \%custom_aliases, \@custom_methods, $inheritor),
       ],
@@ -228,10 +229,11 @@ sub gen_proxy {
 }
 
 sub installer {
-  my ($self, $inheritor) = @_;
+  my ($self) = @_;
   sub {
     Sub::Exporter::default_installer @_;
-    namespace::clean->import( -cleanee => $inheritor )
+    my %subs = @{ $_[1] };
+    namespace::clean->import( -cleanee => $_[0]{into}, keys %subs )
   }
 }
 
