@@ -26,4 +26,4 @@ resources:
   bugtracker: https://github.com/frioux/DBIx-Class-Candy/issues
   homepage: https://github.com/frioux/DBIx-Class-Candy
   repository: https://github.com/frioux/DBIx-Class-Candy.git
-version: '0.002106'
+version: '0.002107'
